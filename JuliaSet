@@ -1,0 +1,108 @@
+
+  float angle = 0;
+
+void setup(){
+ 
+  size(640, 480);
+  colorMode(HSB, 1);
+  
+  
+}
+
+void draw(){
+
+ 
+  
+  
+  
+  
+  
+  /*Try the values
+     ac      bc
+   0.285 + 0
+   0.285 + 0.01
+   0.45  + 0.1428
+   −0.70176 − 0.3842
+   −0.835 − 0.2321
+   −0.8  + 0.156
+   −0.7269 + 0.1889
+   −0.8
+   -0.74543 + 0.11301
+   -0.75 + 0.11
+   -0.1  + 0.651
+  */
+  
+
+  
+  float ac = sin(angle);
+  float bc = cos(angle);
+  println(ac + " " + bc);
+  angle += 0.02;
+  
+   background(255);
+   
+   float w = 5;
+  float h = (w * height) / width; 
+  
+  float xmin = -w/2;
+  float ymin = -h/2;
+  
+  int maxIt = 100;
+  
+  float xmax = xmin + w;
+  float ymax = ymin + h;
+  
+  loadPixels();
+  
+  float dx = (xmax - xmin) / (width);
+  float dy = (ymax - ymin) / (height);
+  
+  
+  
+  float y = ymin;
+  for (int j = 0; j<height; j++){
+    float x =xmin;
+    for(int i =0; i<width; i++){
+      
+      float a =x;
+      float b = y;
+      int n = 0;
+      
+      while (n < maxIt){
+        float aa = a * a;
+        float bb = b * b;
+        
+        if(aa * aa + bb * bb >maxIt){
+          break;
+        }
+        float twoab = 2.0 * a * b;
+        a = aa - bb + ac;
+        b = twoab + bc;
+        n++;
+      
+      }
+     
+      float hue = (sqrt(float(n)) * n / maxIt );
+      float sat = 255;
+      float val = map(n, 0, maxIt, 0, 255);
+      
+      if (n == maxIt){
+        val = 0;
+        pixels[i + j * width] = color(val);
+      }else{
+        pixels[i + j * width] = color(hue, sat, val);
+      }
+      x += dx;
+      
+      
+    }
+    y += dy;
+   
+  }
+  
+   
+  updatePixels();
+  println(frameRate);
+   
+
+}
